@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:productos_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
+import '../models/product.dart';
 import '../services/services.dart';
 import 'screens.dart';
 
@@ -26,7 +27,10 @@ class HomeScreen extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             title: GestureDetector(
-                onTap: () => Navigator.pushNamed(context, 'product'),
+                onTap: (){
+                  productsService.selectedProduct = productsService.products[index].copy();
+                  Navigator.pushNamed(context, 'product');
+                },
                 child:  ProductCard(
                   product: productsService.products[index],
                 )),
@@ -34,7 +38,14 @@ class HomeScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          productsService.selectedProduct = Product(
+            available: false,
+            name: '',
+            price: 0,
+          );
+          Navigator.pushNamed(context, 'product');
+        },
         child: const Icon(Icons.add),
       ),
     );
